@@ -54,7 +54,7 @@
   yum:
     name: "{{ item.name }}"
     enablerepo: "{{ yum_kernel_list |
-                 rhel_repo(kernel_version, ansible_kernel) }}.*"
+                 rhel_repo(kernel_version, ansible_kernel) }}"
     allow_downgrade: "{{ item.downgrade | default(false) }}"
   when:
     - ansible_os_family == 'RedHat'
