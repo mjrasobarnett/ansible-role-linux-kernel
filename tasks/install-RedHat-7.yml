@@ -52,7 +52,7 @@
 
 - name: "Ensure kernel packages versions with YUM"
   yum:
-    name: "{{ item.name }}-{{ _kernel }}"
+    name: "{{ item.name }}"
     enablerepo: "{{ yum_kernel_list |
                  rhel_repo(kernel_version, ansible_kernel) }}.*"
     allow_downgrade: "{{ item.downgrade | default(false) }}"
@@ -63,28 +63,28 @@
   with_items:
     # Kernel and kernel-devel have multiversion support, so do not need
     # to be downgrades
-    - name: kernel
+    - name: "kernel-{{ _kernel }}"
       when: true
-    - name: "kernel-tools"
+    - name: "kernel-tools-{{ _kernel }}, kernel-tools-libs-{{ _kernel }}"
       when: true
       downgrade: true
-    - name: kernel-devel
+    - name: "kernel-devel-{{ _kernel }}"
       when: "{{ install_kernel_headers | bool }}"
-    - name: kernel-headers
+    - name: "kernel-headers-{{ _kernel }}"
       when: "{{ install_kernel_headers | bool }}"
       downgrade: true
-    - name: kernel-debuginfo
+    - name: "kernel-debuginfo-{{ _kernel }}"
       when: "{{ install_kernel_debuginfo | bool }}"
       downgrade: true
-    - name: kernel-tools-debuginfo
+    - name: "kernel-tools-debuginfo-{{ _kernel }}"
       when: "{{ install_kernel_debuginfo | bool }}"
       downgrade: true
-    - name: perf
+    - name: "perf-{{ _kernel }}"
       when: "{{ install_perf | bool }}"
       downgrade: true
-    - name: python-perf
+    - name: "python-perf-{{ _kernel }}"
       when: "{{ install_perf | bool }}"
       downgrade: true
-    - name: bpftool
+    - name: "bpftool-{{ _kernel }}"
       when: "{{ install_bpftool | bool }}"
       downgrade: true
